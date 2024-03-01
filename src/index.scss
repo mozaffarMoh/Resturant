@@ -2,9 +2,12 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
-  overflow: hidden;
+  font-family: cursive;
 }
 
+body {
+  background-color: rgb(245, 112, 4);
+}
 
 .flexCenter {
   display: flex;
@@ -12,9 +15,22 @@
   align-items: center;
 }
 
+.flexStart {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .flexCenterColumn {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+
+.flexBetweenColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 }
