@@ -23,31 +23,37 @@ export const MenuListArray = [
         itemsType: 'Sandwich',
         items: [
             {
+                key : 1,
                 img: crispy,
                 num: 1,
                 name: 'Crispy',
                 unitPrice: 2000,
             }, {
+                key : 2,
                 img: shawrma,
                 num: 1,
                 name: 'Shawrma',
                 unitPrice: 1500
             }, {
+                key : 3,
                 img: Falafel,
                 num: 1,
                 name: 'Falafel',
                 unitPrice: 500
             }, {
+                key : 4,
                 img: chips,
                 num: 1,
                 name: 'Chips',
                 unitPrice: 1000
             }, {
+                key : 5,
                 img: burger,
                 num: 1,
                 name: 'Burger',
                 unitPrice: 1500
             }, {
+                key : 6,
                 img: cheeseBurger,
                 num: 1,
                 name: 'Cheese Burger',
@@ -59,30 +65,35 @@ export const MenuListArray = [
         itemsType: 'Meals',
         items: [
             {
+                key : 7,
                 img: crispyM,
                 num: 1,
                 name: 'Crispy-meal',
                 unitPrice: 2500
             },
             {
+                key : 8,
                 img: shawrmaM,
                 num: 1,
                 name: 'Shawrma-meal',
                 unitPrice: 2000
             },
             {
+                key : 9,
                 img: chipsM,
                 num: 1,
                 name: 'Chips-meal',
                 unitPrice: 1000
             },
             {
+                key : 10,
                 img: FalafelM,
                 num: 1,
                 name: 'Falafel-meal',
                 unitPrice: 500
             },
             {
+                key : 11,
                 img: kababM,
                 num: 1,
                 name: 'Kabab-meal',
@@ -93,24 +104,28 @@ export const MenuListArray = [
         itemsType: 'Juices',
         items: [
             {
+                key : 12,
                 img: orange,
                 num: 1,
                 name: 'Orange',
                 unitPrice: 1000
             },
             {
+                key : 13,
                 img: mango,
                 num: 1,
                 name: 'Mango',
                 unitPrice: 1000
             },
             {
+                key : 14,
                 img: strawberry,
                 num: 1,
                 name: 'Strawberry',
                 unitPrice: 1500
             },
             {
+                key : 15,
                 img: cocktail,
                 num: 1,
                 name: 'Cocktail',

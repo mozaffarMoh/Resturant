@@ -14,8 +14,11 @@ export const ordersSlice = createSlice({
         removeOrder: (state, action) => {
             state.data.splice(action.payload, 1);
         },
+        removeAllData: (state) => {
+            state.data.length = 0;
+        },
     },
 });
 
-export const { addOrder, removeOrder } = ordersSlice.actions;
+export const { addOrder, removeOrder, removeAllData } = ordersSlice.actions;
 export default ordersSlice.reducer;

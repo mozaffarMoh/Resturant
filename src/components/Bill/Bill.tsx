@@ -5,16 +5,18 @@ import { TiDocumentDelete } from "react-icons/ti";
 import { MdDelete } from "react-icons/md";
 import { FcPrint } from "react-icons/fc";
 import { Table } from "antd";
-import { addOrder, removeOrder } from "../../Slices/OrdersSlice";
+import { addOrder, removeAllData, removeOrder } from "../../Slices/OrdersSlice";
 import React from "react";
 
 const Bill = () => {
   const dispatch = useDispatch();
   const ordersArray: any = useSelector((state: RootType) => state.orders.data);
+  const [printingStarted, setPrintingStarted] = React.useState(false);
   const [deleteHover, setDeleteHover] = React.useState(false);
   const [minusOneHover, setMinusOneHover] = React.useState(false);
   const [hoverIndex, setHoverIndex] = React.useState(0);
   const [totalPrice, setTotalPrice] = React.useState(0);
+  const [totalCash, setTotalCash] = React.useState(0);
 
   /* Handle Remove Order */
   const handleRemoveOrder = (index: number) => {
@@ -106,17 +108,46 @@ const Bill = () => {
     }
   }, [ordersArray]);
 
+  /* print button */
+  const handlePrint = () => {
+    setPrintingStarted(true);
+    window.print();
+  };
+
+  /* Remove All Data array after print the bill */
+  React.useEffect(() => {
+    const handleAfterPrint = () => {
+      //if (printingStarted) {
+      setTotalCash((prev) => prev + totalPrice);
+      dispatch(removeAllData());
+    };
+
+    window.addEventListener("afterprint", () => handleAfterPrint());
+
+    return () => {
+      window.removeEventListener("afterprint", () => handleAfterPrint());
+    };
+  }, [dispatch, printingStarted]);
+
+  console.log(printingStarted);
+
   return (
     <div className="bill">
       <Table
         dataSource={ordersArray}
         columns={columns}
+        key={"key"}
         footer={() => <p>Total Price: {totalPrice} SYP</p>}
       />
-      <button className="print-button flexCenterColumn">
+
+      <button className="print-button flexCenterColumn" onClick={handlePrint}>
         <p>Print</p>
         <FcPrint className="print-logo" />
       </button>
+
+      <div className="total-cash flexCenterColumn">
+        <p>Total cash : {totalCash} SYP</p>
+      </div>
     </div>
   );
 };
