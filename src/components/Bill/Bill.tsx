@@ -11,17 +11,17 @@ import {
   removeOrder,
 } from "../../Slices/OrdersSlice";
 import React from "react";
-import Cookies from "cookies-js";
+import Cookies from "js-cookie";
 
 const Bill = () => {
   const dispatch = useDispatch();
-  const totalCashCookies = Cookies.get("totalCash");
   const ordersArray: any = useSelector((state: RootType) => state.orders.data);
   const [deleteHover, setDeleteHover] = React.useState(false);
   const [minusOneHover, setMinusOneHover] = React.useState(false);
   const [hoverIndex, setHoverIndex] = React.useState(0);
   const [totalPrice, setTotalPrice] = React.useState(0);
-  const [totalCash, setTotalCash] = React.useState(0);
+  const totalCashCookies: any = Cookies.get("totalCash");
+  const [totalCash, setTotalCash]: any = React.useState(totalCashCookies | 0);
 
   /* Handle Remove Order */
   const handleRemoveOrder = (index: number) => {
@@ -113,26 +113,23 @@ const Bill = () => {
     }
   }, [ordersArray]);
 
+  /* Remove cash */
+  const removeCash = () => {
+    Cookies.remove("totalCash");
+    setTotalCash(0);
+    dispatch(removeAllData());
+  };
+
+  /* Add bill to cash and remove current array */
+  const addToCash = () => {
+    setTotalCash((prev: any) => prev + totalPrice);
+    dispatch(removeAllData());
+  };
+
+  /* Set cash in cookies */
   React.useEffect(() => {
-    const handleBeforePrint = () => {
-      console.log("Print Before...");
-      setTotalCash((prev) => prev + totalPrice);
-      dispatch(removeAllData());
-      Cookies.set("totalCash", totalCash);
-    };
-
-    const handleAfterPrint = () => {
-      console.log("Print After.");
-    };
-
-    window.onbeforeprint = handleBeforePrint;
-    window.onafterprint = handleAfterPrint;
-
-    return () => {
-      window.onbeforeprint = null;
-      window.onafterprint = null;
-    };
-  }, []);
+    Cookies.set("totalCash", totalCash);
+  }, [totalCash]);
 
   return (
     <div className="bill">
@@ -154,6 +151,12 @@ const Bill = () => {
       >
         <p>Print</p>
         <FcPrint className="print-logo" />
+      </button>
+      <button className="add-to-cash" onClick={addToCash}>
+        <p>Add to cash</p>
+      </button>
+      <button className="add-to-cash" onClick={removeCash}>
+        <p>Remove cash</p>
       </button>
 
       <div className="total-cash flexCenterColumn">

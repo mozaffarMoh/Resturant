@@ -30,15 +30,16 @@
         cursor: pointer;
     }
 
-    .total-price{
+    .total-price {
         font-weight: 800;
     }
 
-    .print-button {
+    .print-button,
+    .add-to-cash {
         width: 100%;
         border-radius: 10px;
         border: 1px solid grey;
-        margin-top: 10px;
+        margin-top: 5px;
         font-size: 15px;
         cursor: pointer;
 
@@ -57,8 +58,13 @@
 
     }
 
+    .add-to-cash {
+        padding: 10px;
+    }
+
     .total-cash {
         width: 100%;
+        padding: 10px;
         font-size: 20px;
         border-radius: 5px;
         margin-top: 5px;
