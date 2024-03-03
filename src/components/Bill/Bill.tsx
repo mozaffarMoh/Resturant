@@ -18,6 +18,8 @@ const Bill = () => {
   const ordersArray: any = useSelector((state: RootType) => state.orders.data);
   const [deleteHover, setDeleteHover] = React.useState(false);
   const [minusOneHover, setMinusOneHover] = React.useState(false);
+  const [showRemoveCashConfirmation, setShowRemoveCashConfirmation] =
+    React.useState(false);
   const [hoverIndex, setHoverIndex] = React.useState(0);
   const [totalPrice, setTotalPrice] = React.useState(0);
   const totalCashCookies: any = Cookies.get("totalCash");
@@ -118,6 +120,7 @@ const Bill = () => {
     Cookies.remove("totalCash");
     setTotalCash(0);
     dispatch(removeAllData());
+    setShowRemoveCashConfirmation(false);
   };
 
   /* Add bill to cash and remove current array */
@@ -145,24 +148,39 @@ const Bill = () => {
         )}
       />
 
-      <button
-        className="print-button flexCenterColumn"
-        onClick={() => window.print()}
-      >
-        <p>Print</p>
-        <FcPrint className="print-logo" />
-      </button>
-      <button className="add-to-cash" onClick={addToCash}>
-        <p>Add to cash</p>
-      </button>
-      <button className="add-to-cash" onClick={removeCash}>
-        <p>Remove cash</p>
-      </button>
+      <div style={{ position: "relative" }}>
+        <button
+          className="print-button flexCenterColumn"
+          onClick={() => window.print()}
+        >
+          <p>Print</p>
+          <FcPrint className="print-logo" />
+        </button>
+        <button className="add-to-cash" onClick={addToCash}>
+          <p>Add to cash</p>
+        </button>
+        <button
+          className="add-to-cash"
+          onClick={() => setShowRemoveCashConfirmation(true)}
+        >
+          <p>Clear cash</p>
+        </button>
 
-      <div className="total-cash flexCenterColumn">
-        <p>
-          Total cash : {totalCashCookies ? totalCashCookies : totalCash} SYP
-        </p>
+        <div className="total-cash flexCenterColumn">
+          <p>
+            Total cash : {totalCashCookies ? totalCashCookies : totalCash} SYP
+          </p>
+        </div>
+
+        {showRemoveCashConfirmation && (
+          <div className="clear-confirmation flexCenterColumn">
+            <p>Are you sure you want to clear all cash</p>
+            <button onClick={removeCash}>Clear</button>
+            <button onClick={() => setShowRemoveCashConfirmation(false)}>
+              Cancel
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
