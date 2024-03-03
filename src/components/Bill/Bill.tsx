@@ -5,13 +5,19 @@ import { TiDocumentDelete } from "react-icons/ti";
 import { MdDelete } from "react-icons/md";
 import { FcPrint } from "react-icons/fc";
 import { Table } from "antd";
-import { addOrder, removeAllData, removeOrder } from "../../Slices/OrdersSlice";
+import {
+  addOrder,
+  editOrder,
+  removeAllData,
+  removeOrder,
+} from "../../Slices/OrdersSlice";
 import React from "react";
+import Cookies from "cookies-js";
 
 const Bill = () => {
   const dispatch = useDispatch();
+  const totalCashCookies = Cookies.get("totalCash");
   const ordersArray: any = useSelector((state: RootType) => state.orders.data);
-  const [printingStarted, setPrintingStarted] = React.useState(false);
   const [deleteHover, setDeleteHover] = React.useState(false);
   const [minusOneHover, setMinusOneHover] = React.useState(false);
   const [hoverIndex, setHoverIndex] = React.useState(0);
@@ -28,9 +34,9 @@ const Bill = () => {
     if (item.num === 1) {
       dispatch(removeOrder(index));
     } else {
-      dispatch(removeOrder(index));
+      //dispatch(removeOrder(index));
       const newItem = { ...item, num: item.num - 1 };
-      dispatch(addOrder(newItem));
+      dispatch(editOrder({ newItem: newItem, index: index }));
     }
   };
 
@@ -108,28 +114,26 @@ const Bill = () => {
     }
   }, [ordersArray]);
 
-  /* print button */
-  const handlePrint = () => {
-    setPrintingStarted(true);
-    window.print();
-  };
-
-  /* Remove All Data array after print the bill */
   React.useEffect(() => {
-    const handleAfterPrint = () => {
-      //if (printingStarted) {
+    const handleBeforePrint = () => {
+      console.log("Print Before...");
       setTotalCash((prev) => prev + totalPrice);
       dispatch(removeAllData());
+      Cookies.set("totalCash", totalCash);
     };
 
-    window.addEventListener("afterprint", () => handleAfterPrint());
+    const handleAfterPrint = () => {
+      console.log("Print After.");
+    };
+
+    window.onbeforeprint = handleBeforePrint;
+    window.onafterprint = handleAfterPrint;
 
     return () => {
-      window.removeEventListener("afterprint", () => handleAfterPrint());
+      window.onbeforeprint = null;
+      window.onafterprint = null;
     };
-  }, [dispatch, printingStarted]);
-
-  console.log(printingStarted);
+  }, []);
 
   return (
     <div className="bill">
@@ -137,16 +141,26 @@ const Bill = () => {
         dataSource={ordersArray}
         columns={columns}
         key={"key"}
-        footer={() => <p>Total Price: {totalPrice} SYP</p>}
+        footer={() => (
+          <p>
+            Total Price: &nbsp;{" "}
+            <span className="total-price">{totalPrice}</span> SYP
+          </p>
+        )}
       />
 
-      <button className="print-button flexCenterColumn" onClick={handlePrint}>
+      <button
+        className="print-button flexCenterColumn"
+        onClick={() => window.print()}
+      >
         <p>Print</p>
         <FcPrint className="print-logo" />
       </button>
 
       <div className="total-cash flexCenterColumn">
-        <p>Total cash : {totalCash} SYP</p>
+        <p>
+          Total cash : {totalCashCookies ? totalCashCookies : totalCash} SYP
+        </p>
       </div>
     </div>
   );

@@ -3,10 +3,12 @@ import { MenuListArray } from "../../assets/constants/MenuListArray";
 import "./MenuList.scss";
 import { addOrder, removeOrder } from "../../Slices/OrdersSlice";
 import { RootType } from "../../store";
+import React from "react";
 
 const MenuList = () => {
   const dispatch = useDispatch();
   const ordersArray: any = useSelector((state: RootType) => state.orders.data);
+  const [itemExist, setItemExist] = React.useState(false);
 
   /* Add new order */
   const handleAddOrder = (item: any) => {
@@ -14,12 +16,14 @@ const MenuList = () => {
       dispatch(addOrder(item));
     } else {
       for (let i = 0; i < ordersArray.length; i++) {
-        if (ordersArray[i].name === item.name) {
+        if (ordersArray[i].key === item.key) {
+          setItemExist(true);
           dispatch(removeOrder(i));
           const newItem = { ...item, num: ordersArray[i].num + 1 };
           dispatch(addOrder(newItem));
         } else {
-          if (i === ordersArray.length - 1) {
+          setItemExist(false);
+          if (i === ordersArray.length - 1 && !itemExist) {
             dispatch(addOrder(item));
           }
         }
