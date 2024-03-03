@@ -6,7 +6,6 @@ import { MdDelete } from "react-icons/md";
 import { FcPrint } from "react-icons/fc";
 import { Table } from "antd";
 import {
-  addOrder,
   editOrder,
   removeAllData,
   removeOrder,
