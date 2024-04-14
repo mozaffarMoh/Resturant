@@ -35,7 +35,6 @@ const Bill = () => {
     if (item.num === 1) {
       dispatch(removeOrder(index));
     } else {
-      //dispatch(removeOrder(index));
       const newItem = { ...item, num: item.num - 1 };
       dispatch(editOrder({ newItem: newItem, index: index }));
     }

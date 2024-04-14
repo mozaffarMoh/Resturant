@@ -1,33 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
 import { MenuListArray } from "../../assets/constants/MenuListArray";
 import "./MenuList.scss";
-import { addOrder, removeOrder } from "../../Slices/OrdersSlice";
+import { addOrder, updateOrdersArray } from "../../Slices/OrdersSlice";
 import { RootType } from "../../store";
-import React from "react";
 
 const MenuList = () => {
   const dispatch = useDispatch();
   const ordersArray: any = useSelector((state: RootType) => state.orders.data);
-  const [itemExist, setItemExist] = React.useState(false);
 
-  /* Add new order */
   const handleAddOrder = (item: any) => {
-    if (ordersArray.length === 0) {
-      dispatch(addOrder(item));
+    const existingOrderIndex = ordersArray.findIndex(
+      (order: any) => order.key === item.key
+    );
+
+    if (existingOrderIndex !== -1) {
+      const updatedArray = [...ordersArray];
+      updatedArray[existingOrderIndex] = {
+        ...item,
+        num: ordersArray[existingOrderIndex].num + 1,
+      };
+      dispatch(updateOrdersArray(updatedArray));
     } else {
-      for (let i = 0; i < ordersArray.length; i++) {
-        if (ordersArray[i].key === item.key) {
-          setItemExist(true);
-          dispatch(removeOrder(i));
-          const newItem = { ...item, num: ordersArray[i].num + 1 };
-          dispatch(addOrder(newItem));
-        } else {
-          setItemExist(false);
-          if (i === ordersArray.length - 1 && !itemExist) {
-            dispatch(addOrder(item));
-          }
-        }
-      }
+      dispatch(addOrder(item));
     }
   };
 

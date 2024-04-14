@@ -14,6 +14,9 @@ export const ordersSlice = createSlice({
         editOrder: (state, action) => {
             state.data[action.payload.index] = action.payload.newItem;
         },
+        updateOrdersArray: (state, action) => {
+            state.data = action.payload;
+        },
         removeOrder: (state, action) => {
             state.data.splice(action.payload, 1);
         },
@@ -23,5 +26,5 @@ export const ordersSlice = createSlice({
     },
 });
 
-export const { addOrder, editOrder, removeOrder, removeAllData } = ordersSlice.actions;
+export const { addOrder, editOrder, updateOrdersArray, removeOrder, removeAllData } = ordersSlice.actions;
 export default ordersSlice.reducer;
